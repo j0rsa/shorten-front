@@ -1,0 +1,6 @@
+.UserContainer {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px 15px;
+}

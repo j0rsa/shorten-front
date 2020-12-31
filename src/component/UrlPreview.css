@@ -1,0 +1,17 @@
+.UrlPreview {
+    height: 150px;
+    width: 600px;
+    display: flex;
+    border-radius: 25px;
+    border: 1px solid darkgray;
+    justify-content: center;
+    align-items: center;
+}
+
+.UrlPreview > div{
+    width: 90%;
+}
+
+.UrlPreviewHidden {
+    display: none;
+}

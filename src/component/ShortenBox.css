@@ -1,0 +1,72 @@
+.ShortenContainer {
+    min-width: 700px;
+}
+
+.ShortenContainerHidden {
+    display: none;
+}
+
+.ShortenContainer > * {
+    box-sizing: border-box;
+}
+
+.ShortenInputLine {
+    width: 100%;
+}
+
+.ShortenInput {
+    min-width: 100px;
+}
+
+.ShortenButton {
+    font-variant-caps: all-small-caps;
+    font-weight: bold;
+}
+
+.ShortenOptionsContainer {
+    width: 90%;
+    border: 1px solid darkgray;
+    border-top: 0;
+    border-spacing: 0;
+    border-radius: 0 0 10px 10px;
+    margin: 0 auto;
+    background-color: white;
+    display: flex;
+    flex-flow: column;
+}
+
+.ShortenOptions {
+    padding: 10px 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.ShortenOptionsContainer .alert-danger {
+    text-align: center;
+}
+
+.ShortenOptionsContainer .alert-light {
+    margin-bottom: 5px;
+    padding: 0 10px;
+}
+
+.ShortenOptions > div > span {
+    color: black;
+    font-weight: bold;
+    align-self: flex-end;
+    padding: 5px 5px;
+}
+
+.ShortenOptions button {
+    font-weight: bold;
+}
+
+
+.ShortenOptions button:disabled {
+    font-weight: lighter;
+}
+
+.ShortenOptions button:disabled:after {
+    content: "*";
+}
