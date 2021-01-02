@@ -19,6 +19,7 @@ interface AppProps {
     loggedInUser?: UserBoxProps,
     error?: string,
     history: History<LocationState>,
+    authUrl: string,
     apiUrl: string,
     redirectUrl: string,
     loading: boolean
@@ -40,6 +41,7 @@ function App() {
         duration: "1",
         clicks: "1",
         history: createHistory(),
+        authUrl: "http://link.j0rsa.com/auth",
         apiUrl: "http://link.j0rsa.com/api",
         redirectUrl: "http://link.j0rsa.com",
         loggedInUser: withUserImage(getLoggedInUser()),
@@ -74,10 +76,9 @@ function App() {
 
     function auth(code: string | null) {
         if (code != null) {
-            axios.post(state.apiUrl, {code: code}).then((result: AxiosResponse<AuthResponse>) => {
-                alert(result.data.id)
-                state.history.push("/")
-            }).catch(() => {
+            axios.post(state.authUrl + "/code", {code: code}).then((result: AxiosResponse<AuthResponse>) => {
+                alert(result.data)
+            }).finally(() => {
                 state.history.push("/")
             })
         }
