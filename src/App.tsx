@@ -34,14 +34,14 @@ function App() {
     const [state, setState] = React.useState<AppProps>({
         loginProviders: [{
             name: "Github",
-            linkUrl: "http://localhost"
+            linkUrl: "auth/login"
         }],
-        url: "http://google.com",
+        url: "",
         duration: "1",
         clicks: "1",
         history: createHistory(),
-        apiUrl: "http://localhost",
-        redirectUrl: "http://localhost",
+        apiUrl: "http://link.j0rsa.com/api",
+        redirectUrl: "http://link.j0rsa.com",
         loggedInUser: withUserImage(getLoggedInUser()),
         loading: false
     })
