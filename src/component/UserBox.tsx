@@ -5,11 +5,16 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap-social/bootstrap-social.css"
 import "font-awesome/css/font-awesome.css"
 
-export interface UserBoxProps {
+export interface AuthData {
     id: string,
     name: string,
-    userImage: string,
     activeProvider: string,
+    token?: string,
+}
+
+export interface UserBoxProps {
+    auth: AuthData,
+    userImage: string,
     onLogout?: () => void,
 }
 
@@ -18,12 +23,12 @@ export const UserBox: React.FC<UserBoxProps> = props => (
         <NavDropdown id="1" title={
             <span>
                 <Image className="logo" src={props.userImage} roundedCircle thumbnail/>
-                <span className={"provider-logo rounded-circle fa fa-"+props.activeProvider.toLocaleLowerCase()+" btn-"+props.activeProvider.toLocaleLowerCase()}/>
+                <span className={"provider-logo rounded-circle fa fa-"+props.auth.activeProvider.toLocaleLowerCase()+" btn-"+props.auth.activeProvider.toLocaleLowerCase()}/>
             </span>
 
         }>
-            <NavDropdown.Header>Logged in as: {props.name}</NavDropdown.Header>
-            <NavDropdown.Header>via: {props.activeProvider}</NavDropdown.Header>
+            <NavDropdown.Header>Logged in as: {props.auth.name}</NavDropdown.Header>
+            <NavDropdown.Header>via: {props.auth.activeProvider}</NavDropdown.Header>
             <NavDropdown.Divider/>
             <NavDropdown.Item onClick={ _ => props.onLogout && props.onLogout()}>Logout</NavDropdown.Item>
         </NavDropdown>

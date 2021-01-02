@@ -15,7 +15,10 @@ const Template: Story<UserBoxProps> = (args: UserBoxProps) => <UserBox {...args}
 
 export const Default = Template.bind({});
 Default.args = {
-    name: "username",
+    auth: {
+        id: "123",
+        name: "username",
+        activeProvider: "Github"
+    },
     userImage: "https://mdbootstrap.com/img/Photos/Avatars/img%20(30).jpg",
-    activeProvider: "Github"
 };

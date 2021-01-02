@@ -21,6 +21,7 @@ export interface ShortenProps {
     clicks: string,
     loggedIn: boolean,
     error?: string,
+    loading: boolean,
     onUrlChange?: (val: string) => void,
     onDurationChange?: (val: string) => void,
     onClicksChange?: (val: string) => void,
@@ -33,6 +34,7 @@ export const defaultShortenProps: ShortenProps = {
     url: "",
     duration: '1',
     clicks: '1',
+    loading: false,
     loggedIn: false,
     error: undefined,
     show: true,
@@ -92,8 +94,10 @@ export const ShortenBox: React.FC<ShortenProps> = props => {
                             variant="warning"
                             className="ShortenButton"
                             onClick={submit}
-                            disabled={props.error !== undefined}
-                        >Shorten</Button>
+                            disabled={props.error !== undefined || props.loading}
+                        >{
+                            props.loading ? <i className="fa fa-circle-o-notch fa-spin"/> : "Shorten"
+                        }</Button>
                     </InputGroup.Append>
                 </InputGroup>
             </div>

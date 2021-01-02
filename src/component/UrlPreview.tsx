@@ -21,7 +21,7 @@ function copy() {
 export const UrlPreview: React.FC<UrlPreviewProps> = props => (
     <div key="urlPreview" className={ "UrlPreview " + (props.show? "":"UrlPreviewHidden") } id="urlPreview">
         <InputGroup size="lg">
-            <FormControl id="urlInput" value={props.urlPrefix + props.urlHash} readOnly/>
+            <FormControl id="urlInput" value={props.urlPrefix + "/" + props.urlHash} readOnly/>
             <InputGroup.Append>
                 <Button onClick={copy} variant="warning">
                     <span className="fa fa-paste"/>

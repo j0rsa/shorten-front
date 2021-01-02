@@ -15,7 +15,7 @@ export const AboutFooter: React.FC<AboutFooterProps> = props => (
                 </a>
             </li>
             <li>
-                2020-{new Date().getFullYear()} ©
+                2020-{new Date().getFullYear()}©
             </li>
         </ul>
     </footer>

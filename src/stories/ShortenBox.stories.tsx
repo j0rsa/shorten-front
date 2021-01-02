@@ -44,6 +44,12 @@ LoggedIn.args = {
     loggedIn: true
 };
 
+export const Loading = Template.bind({});
+Loading.args = {
+    ...defaultShortenProps,
+    loading: true
+}
+
 export const WithError = Template.bind({});
 WithError.args = {
     ...defaultShortenProps,

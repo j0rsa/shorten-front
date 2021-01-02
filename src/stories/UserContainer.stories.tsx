@@ -31,10 +31,12 @@ NotLoggedIn.args = {
 export const LoggedIn = Template.bind({})
 LoggedIn.args = {
     loggedInUser: {
-        id: "1",
-        name: "username",
+        auth: {
+            id: "1",
+            name: "username",
+            activeProvider: "Github",
+        },
         userImage: "https://mdbootstrap.com/img/Photos/Avatars/img%20(30).jpg",
-        activeProvider: "Github",
         onLogout: action("User logged out")
     },
     providers: [

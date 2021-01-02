@@ -70,3 +70,8 @@
 .ShortenOptions button:disabled:after {
     content: "*";
 }
+
+.fa-spin {
+    text-indent: -0.000001em;
+    line-height: 0.6em;
+}

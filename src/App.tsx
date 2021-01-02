@@ -4,7 +4,7 @@ import UserContainer from "./component/UserContainer";
 import ShortenBox, {ShortenProps} from "./component/ShortenBox";
 import AboutFooter from "./component/AboutFooter";
 import {LoginProviderProps} from "./component/LoginProvider";
-import {UserBoxProps} from "./component/UserBox";
+import {AuthData, UserBoxProps} from "./component/UserBox";
 import UrlPreview from "./component/UrlPreview";
 import {Router, Route, Switch} from 'react-router-dom'
 import {createBrowserHistory as createHistory, LocationState, History} from "history";
@@ -18,9 +18,10 @@ interface AppProps {
     clicks: string,
     loggedInUser?: UserBoxProps,
     error?: string,
-    token?: string,
     history: History<LocationState>,
     apiUrl: string,
+    redirectUrl: string,
+    loading: boolean
 }
 
 interface AuthResponse {
@@ -40,13 +41,34 @@ function App() {
         clicks: "1",
         history: createHistory(),
         apiUrl: "http://localhost",
+        redirectUrl: "http://localhost",
+        loggedInUser: withUserImage(getLoggedInUser()),
+        loading: false
     })
 
+    function getLoggedInUser(): AuthData | undefined {
+        let authDataString = localStorage.getItem("authData")
+        return authDataString ? JSON.parse(authDataString) : undefined
+    }
+
+    function withUserImage(authData?: AuthData): UserBoxProps | undefined {
+        if (authData) {
+            //fetch image
+            return {
+                auth: authData,
+                userImage: ""
+            }
+        }
+        return undefined;
+    }
+
     function shorten(val: ShortenProps) {
+        setState({...state, loading: true})
         let hash = "asd"
-        setState({...state, hash: hash})
-        state.history.push('/result#' + hash)
-        localStorage.setItem("last_url",state.url)
+        setTimeout(function () {
+            setState({...state, hash: hash, loading: false})
+            state.history.push('/result#' + hash)
+        }, 500);
 
     }
 
@@ -54,6 +76,8 @@ function App() {
         if (code != null) {
             axios.post(state.apiUrl, {code: code}).then((result: AxiosResponse<AuthResponse>) => {
                 alert(result.data.id)
+                state.history.push("/")
+            }).catch(() => {
                 state.history.push("/")
             })
         }
@@ -63,11 +87,6 @@ function App() {
         let search = window.location.search;
         const params = new URLSearchParams(search);
         auth(params.get("code"))
-
-        let lastUrl = localStorage.getItem("last_url")
-        if (lastUrl) {
-            alert(lastUrl);
-        }
     })
 
     return (
@@ -91,12 +110,13 @@ function App() {
                                 onDurationChange={(val) => setState({...state, duration: val})}
                                 onError={(val) => setState({...state, error: val})}
                                 onShorten={shorten}
+                                loading={state.loading}
                             />
                         </Route>
                         <Route path="/result">
                             <UrlPreview
-                                urlPrefix={"http://localhost/"}
-                                urlHash={state.history.location.hash.substr(1) || ""}
+                                urlPrefix={state.redirectUrl}
+                                urlHash={state.hash ? state.hash : state.history.location.hash.substr(1) || ""}
                             />
                         </Route>
                     </Switch>
