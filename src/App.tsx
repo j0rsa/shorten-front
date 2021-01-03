@@ -36,13 +36,6 @@ interface AuthResponse {
     oauth_provider: string,
 }
 
-interface AxiosErrorResponse {
-    message: string,
-    name: string,
-    fileName: string,
-
-}
-
 function App() {
     const [state, setState] = React.useState<AppProps>({
         loginProviders: [{
@@ -77,6 +70,7 @@ function App() {
 
     function auth(code: string | null) {
         if (code != null) {
+            state.history.push("/")
             axios.post(state.authUrl + "/token", {code: code}).then((result: AxiosResponse<AuthResponse>) => {
                 let data = result.data;
                 let authData = {
@@ -93,8 +87,6 @@ function App() {
                 })
             }).catch((reason: Error) => {
                 setState({...state, error: reason.message})
-            }).finally(() => {
-                state.history.push("/")
             })
         }
     }
