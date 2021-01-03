@@ -18,7 +18,7 @@ Default.args = {
     auth: {
         id: "123",
         name: "username",
-        activeProvider: "Github"
-    },
-    userImage: "https://mdbootstrap.com/img/Photos/Avatars/img%20(30).jpg",
+        activeProvider: "Github",
+        userImage: "https://mdbootstrap.com/img/Photos/Avatars/img%20(30).jpg",
+    }
 };

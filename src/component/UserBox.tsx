@@ -9,12 +9,12 @@ export interface AuthData {
     id: string,
     name: string,
     activeProvider: string,
+    userImage: string,
     token?: string,
 }
 
 export interface UserBoxProps {
     auth: AuthData,
-    userImage: string,
     onLogout?: () => void,
 }
 
@@ -22,7 +22,7 @@ export const UserBox: React.FC<UserBoxProps> = props => (
     <Nav className="LoginButtons">
         <NavDropdown id="1" title={
             <span>
-                <Image className="logo" src={props.userImage} roundedCircle thumbnail/>
+                <Image className="logo" src={props.auth.userImage} roundedCircle thumbnail/>
                 <span className={"provider-logo rounded-circle fa fa-"+props.auth.activeProvider.toLocaleLowerCase()+" btn-"+props.auth.activeProvider.toLocaleLowerCase()}/>
             </span>
 

@@ -4,11 +4,11 @@ import UserContainer from "./component/UserContainer";
 import ShortenBox, {ShortenProps} from "./component/ShortenBox";
 import AboutFooter from "./component/AboutFooter";
 import {LoginProviderProps} from "./component/LoginProvider";
-import {AuthData, UserBoxProps} from "./component/UserBox";
+import {AuthData} from "./component/UserBox";
 import UrlPreview from "./component/UrlPreview";
 import {Router, Route, Switch} from 'react-router-dom'
 import {createBrowserHistory as createHistory, LocationState, History} from "history";
-import axios, {AxiosResponse} from "axios";
+import axios, {AxiosError, AxiosResponse} from "axios";
 
 interface AppProps {
     loginProviders: Array<LoginProviderProps>,
@@ -16,7 +16,7 @@ interface AppProps {
     hash?: string,
     duration: string,
     clicks: string,
-    loggedInUser?: UserBoxProps,
+    authData?: AuthData,
     error?: string,
     history: History<LocationState>,
     authUrl: string,
@@ -27,9 +27,13 @@ interface AppProps {
 }
 
 interface AuthResponse {
-    id: string,
+    id: number,
+    login: string,
     name: string,
-
+    email: string | undefined,
+    avatar_url: string,
+    token: string,
+    oauth_provider: string,
 }
 
 function App() {
@@ -45,30 +49,19 @@ function App() {
         authUrl: "https://link.j0rsa.com/auth",
         apiUrl: "https://link.j0rsa.com/api",
         redirectUrl: "https://link.j0rsa.com",
-        loggedInUser: withUserImage(getLoggedInUser()),
+        authData: getAuthData(),
         loading: false,
         disabled: false
     })
 
-    function getLoggedInUser(): AuthData | undefined {
+    function getAuthData(): AuthData | undefined {
         let authDataString = localStorage.getItem("authData")
         return authDataString ? JSON.parse(authDataString) : undefined
     }
 
-    function withUserImage(authData?: AuthData): UserBoxProps | undefined {
-        if (authData) {
-            //fetch image
-            return {
-                auth: authData,
-                userImage: ""
-            }
-        }
-        return undefined;
-    }
-
     function shorten(val: ShortenProps) {
         setState({...state, loading: true})
-        let hash = "asd"
+        let hash = val.url.substr(0,0) + "asd"
         setTimeout(function () {
             setState({...state, hash: hash, loading: false})
             state.history.push('/result#' + hash)
@@ -78,8 +71,20 @@ function App() {
     function auth(code: string | null) {
         if (code != null) {
             axios.post(state.authUrl + "/token", {code: code}).then((result: AxiosResponse<AuthResponse>) => {
-                console.log("auth response",result)
-            }).catch((reason) => {
+                let data = result.data;
+                let authData = {
+                    id: data.id.toString(),
+                    name: data.name,
+                    userImage: data.avatar_url,
+                    activeProvider: data.oauth_provider,
+                    token: result.data.token
+                };
+                localStorage.setItem("authData", JSON.stringify(authData));
+                setState({
+                    ...state,
+                    authData: authData,
+                })
+            }).catch((reason: AxiosError) => {
                 setState({...state, error: JSON.stringify(reason)})
             }).finally(() => {
                 state.history.push("/")
@@ -97,7 +102,7 @@ function App() {
         <div className="App">
             <header className="App-header">
                 <UserContainer
-                    loggedInUser={state.loggedInUser}
+                    loggedInUser={state.authData ? {auth: state.authData} : undefined}
                     providers={state.loginProviders}
                 />
                 <Router history={state.history}>
@@ -107,7 +112,7 @@ function App() {
                                 url={state.url}
                                 duration={state.duration}
                                 clicks={state.clicks}
-                                loggedIn={state.loggedInUser !== undefined}
+                                loggedIn={state.authData !== undefined}
                                 error={state.error}
                                 onUrlChange={(val) => setState({...state, url: val})}
                                 onClicksChange={(val) => setState({...state, clicks: val})}

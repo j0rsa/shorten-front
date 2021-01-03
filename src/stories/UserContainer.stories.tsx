@@ -35,8 +35,8 @@ LoggedIn.args = {
             id: "1",
             name: "username",
             activeProvider: "Github",
+            userImage: "https://mdbootstrap.com/img/Photos/Avatars/img%20(30).jpg",
         },
-        userImage: "https://mdbootstrap.com/img/Photos/Avatars/img%20(30).jpg",
         onLogout: action("User logged out")
     },
     providers: [
