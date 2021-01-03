@@ -42,9 +42,9 @@ function App() {
         duration: "1",
         clicks: "1",
         history: createHistory(),
-        authUrl: "http://link.j0rsa.com/auth",
-        apiUrl: "http://link.j0rsa.com/api",
-        redirectUrl: "http://link.j0rsa.com",
+        authUrl: "https://link.j0rsa.com/auth",
+        apiUrl: "https://link.j0rsa.com/api",
+        redirectUrl: "https://link.j0rsa.com",
         loggedInUser: withUserImage(getLoggedInUser()),
         loading: false,
         disabled: false
@@ -78,9 +78,9 @@ function App() {
     function auth(code: string | null) {
         if (code != null) {
             axios.post(state.authUrl + "/token", {code: code}).then((result: AxiosResponse<AuthResponse>) => {
-                alert(result.data)
+                console.log("auth response",result)
             }).catch((reason) => {
-                setState({...state, error: reason})
+                setState({...state, error: JSON.stringify(reason)})
             }).finally(() => {
                 state.history.push("/")
             })
