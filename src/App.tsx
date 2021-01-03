@@ -22,7 +22,8 @@ interface AppProps {
     authUrl: string,
     apiUrl: string,
     redirectUrl: string,
-    loading: boolean
+    loading: boolean,
+    disabled: boolean
 }
 
 interface AuthResponse {
@@ -45,7 +46,8 @@ function App() {
         apiUrl: "http://link.j0rsa.com/api",
         redirectUrl: "http://link.j0rsa.com",
         loggedInUser: withUserImage(getLoggedInUser()),
-        loading: false
+        loading: false,
+        disabled: false
     })
 
     function getLoggedInUser(): AuthData | undefined {
@@ -71,13 +73,14 @@ function App() {
             setState({...state, hash: hash, loading: false})
             state.history.push('/result#' + hash)
         }, 500);
-
     }
 
     function auth(code: string | null) {
         if (code != null) {
-            axios.post(state.authUrl + "/code", {code: code}).then((result: AxiosResponse<AuthResponse>) => {
+            axios.post(state.authUrl + "/token", {code: code}).then((result: AxiosResponse<AuthResponse>) => {
                 alert(result.data)
+            }).catch((reason) => {
+                setState({...state, error: reason})
             }).finally(() => {
                 state.history.push("/")
             })
@@ -109,9 +112,10 @@ function App() {
                                 onUrlChange={(val) => setState({...state, url: val})}
                                 onClicksChange={(val) => setState({...state, clicks: val})}
                                 onDurationChange={(val) => setState({...state, duration: val})}
-                                onError={(val) => setState({...state, error: val})}
+                                onError={(val) => setState({...state, error: val, disabled: val !== undefined})}
                                 onShorten={shorten}
                                 loading={state.loading}
+                                disabled={state.disabled}
                             />
                         </Route>
                         <Route path="/result">

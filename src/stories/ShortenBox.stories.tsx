@@ -53,6 +53,14 @@ Loading.args = {
 export const WithError = Template.bind({});
 WithError.args = {
     ...defaultShortenProps,
-    error: "Some error"
+    error: "Some error",
+    disabled: true
+};
+
+export const ApiError = Template.bind({});
+ApiError.args = {
+    ...defaultShortenProps,
+    error: "Some error",
+    disabled: false
 };
 

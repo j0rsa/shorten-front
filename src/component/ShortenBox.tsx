@@ -28,6 +28,7 @@ export interface ShortenProps {
     onShorten?: (val: ShortenProps) => void,
     onError?: (val?: string) => void,
     show?: boolean,
+    disabled: boolean
 }
 
 export const defaultShortenProps: ShortenProps = {
@@ -38,6 +39,7 @@ export const defaultShortenProps: ShortenProps = {
     loggedIn: false,
     error: undefined,
     show: true,
+    disabled: false
 }
 
 const durationOptions: Array<Duration> = [
@@ -94,7 +96,7 @@ export const ShortenBox: React.FC<ShortenProps> = props => {
                             variant="warning"
                             className="ShortenButton"
                             onClick={submit}
-                            disabled={props.error !== undefined || props.loading}
+                            disabled={props.disabled || props.loading}
                         >{
                             props.loading ? <i className="fa fa-circle-o-notch fa-spin"/> : "Shorten"
                         }</Button>
