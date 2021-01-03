@@ -8,7 +8,7 @@ import {AuthData} from "./component/UserBox";
 import UrlPreview from "./component/UrlPreview";
 import {Router, Route, Switch} from 'react-router-dom'
 import {createBrowserHistory as createHistory, LocationState, History} from "history";
-import axios, {AxiosError, AxiosResponse} from "axios";
+import axios, {AxiosResponse} from "axios";
 
 interface AppProps {
     loginProviders: Array<LoginProviderProps>,
@@ -34,6 +34,13 @@ interface AuthResponse {
     avatar_url: string,
     token: string,
     oauth_provider: string,
+}
+
+interface AxiosErrorResponse {
+    message: string,
+    name: string,
+    fileName: string,
+
 }
 
 function App() {
@@ -84,12 +91,17 @@ function App() {
                     ...state,
                     authData: authData,
                 })
-            }).catch((reason: AxiosError) => {
-                setState({...state, error: JSON.stringify(reason)})
+            }).catch((reason: Error) => {
+                setState({...state, error: reason.message})
             }).finally(() => {
                 state.history.push("/")
             })
         }
+    }
+
+    function onLogout() {
+        localStorage.removeItem("authData")
+        setState({...state, authData: undefined})
     }
 
     useEffect(() => {
@@ -102,7 +114,10 @@ function App() {
         <div className="App">
             <header className="App-header">
                 <UserContainer
-                    loggedInUser={state.authData ? {auth: state.authData} : undefined}
+                    loggedInUser={state.authData ? {
+                        auth: state.authData,
+                        onLogout: onLogout
+                    } : undefined}
                     providers={state.loginProviders}
                 />
                 <Router history={state.history}>
