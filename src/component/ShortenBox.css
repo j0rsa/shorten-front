@@ -75,3 +75,38 @@
     text-indent: -0.000001em;
     line-height: 0.6em;
 }
+
+@media only screen and (max-width: 600px) {
+    .ShortenContainer {
+        min-width: 300px;
+    }
+
+    * {
+        font-size: 10pt;
+    }
+
+   .ShortenButton {
+        font-variant-caps: all-small-caps;
+        font-weight: bold;
+    }
+
+    .ShortenOptions {
+        padding: 10px 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
+    .ShortenOptions > div > span {
+        font-size: 9pt;
+        padding: 3px 3px;
+        width: 50px;
+        display: inline-block;
+    }
+
+    .ShortenOptions > div {
+        padding-top: 5px;
+    }
+
+}
