@@ -43,7 +43,6 @@
   },
   "devDependencies": {
     "jquery": "1.9.1",
-    "babel-loader": "8.2.2",
     "@sambego/storybook-state": "^2.0.1",
     "@storybook/addon-actions": "^6.1.11",
     "@storybook/addon-essentials": "^6.1.11",
